@@ -10,7 +10,9 @@ const messageText = document.getElementById('message-text');
 const downloadContainer = document.getElementById('download-container');
 const downloadBtn = document.getElementById('download-btn');
 
-const UPLOAD_URL = 'http://127.0.0.1:5000/upload'; // Backend URL
+const UPLOAD_URL = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
+    ? 'http://127.0.0.1:5000/upload'
+    : '/upload'; // Relative path for Vercel deployment
 
 // Allowed file types and size
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -65,9 +67,9 @@ function handleFileSelect(e) {
 function handleFiles(files) {
     if (files.length === 0) return;
     const file = files[0];
-    
+
     resetUI();
-    
+
     if (validateFile(file)) {
         uploadFile(file);
     }
@@ -79,25 +81,25 @@ function validateFile(file) {
         showMessage('Invalid file type. Only JPG, JPEG, and PNG are allowed.', 'error');
         return false;
     }
-    
+
     // Validate Size
     if (file.size > MAX_SIZE) {
         showMessage('File size exceeds 5MB limit.', 'error');
         return false;
     }
-    
+
     return true;
 }
 
 function uploadFile(file) {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     const xhr = new XMLHttpRequest();
-    
+
     // Important: Set responseType to blob to handle binary data
-    xhr.responseType = 'blob'; 
-    
+    xhr.responseType = 'blob';
+
     // Progress Handler
     xhr.upload.addEventListener('progress', (e) => {
         if (e.lengthComputable) {
@@ -105,9 +107,9 @@ function uploadFile(file) {
             updateProgress(percentComplete);
         }
     });
-    
+
     // Load Handler
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             // Success! We received a binary file (blob)
             handleSuccess(xhr.response, file.name);
@@ -115,7 +117,7 @@ function uploadFile(file) {
             // Error: Response is likely a JSON error message, but it comes as a blob
             // We need to read the blob to get the text
             const reader = new FileReader();
-            reader.onload = function() {
+            reader.onload = function () {
                 try {
                     const response = JSON.parse(reader.result);
                     showMessage(response.error || 'An error occurred during upload.', 'error');
@@ -124,21 +126,21 @@ function uploadFile(file) {
                 }
             };
             reader.readAsText(xhr.response);
-            
+
             progressContainer.classList.add('hidden');
         }
     };
-    
+
     // Error Handler
-    xhr.onerror = function() {
+    xhr.onerror = function () {
         showMessage('Network error. Is the backend server running?', 'error');
         progressContainer.classList.add('hidden');
     };
-    
+
     // Setup UI for upload
     fileNameDisplay.textContent = file.name;
     progressContainer.classList.remove('hidden');
-    
+
     xhr.open('POST', UPLOAD_URL, true);
     xhr.send(formData);
 }
@@ -150,18 +152,18 @@ function updateProgress(percent) {
 
 function handleSuccess(blob, originalFilename) {
     showMessage('File processed successfully!', 'success');
-    
+
     // Create a URL for the blob
     if (currentDownloadUrl) {
         URL.revokeObjectURL(currentDownloadUrl);
     }
     currentDownloadUrl = URL.createObjectURL(blob);
-    
+
     // Determine extension based on MIME type or default to jpg
     const extension = blob.type === 'image/png' ? '.png' : '.jpg';
     const filenameBase = originalFilename.substring(0, originalFilename.lastIndexOf('.')) || originalFilename;
     const downloadName = `compressed_${filenameBase}${extension}`;
-    
+
     // Update Download Button
     downloadBtn.href = currentDownloadUrl;
     downloadBtn.download = downloadName;
@@ -171,7 +173,7 @@ function handleSuccess(blob, originalFilename) {
         </svg>
         Download Compressed Image
     `;
-    
+
     downloadContainer.classList.remove('hidden');
 }
 
