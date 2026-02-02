@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileForge - Image Compressor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>FileForge</h1>
+            <p>Upload your images for instant processing and compression.</p>
+        </header>
+
+        <main class="upload-container">
+            <!-- Drag & Drop Zone -->
+            <div id="drop-zone" class="drop-zone">
+                <div class="icon-container">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24254 10.1948M12 12V21M12 12L15 15M12 12L9 15"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3>Drag & Drop your image here</h3>
+                <p>or <span class="browse-link">browse files</span></p>
+                <input type="file" id="file-input" accept=".jpg, .jpeg, .png" hidden>
+            </div>
+
+            <!-- Upload Progress -->
+            <div id="progress-container" class="progress-container hidden">
+                <div class="progress-info">
+                    <span id="file-name">filename.jpg</span>
+                    <span id="progress-text">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- Status Messages -->
+            <div id="message-container" class="message-container hidden">
+                <p id="message-text"></p>
+            </div>
+
+            <!-- Download Section -->
+            <div id="download-container" class="download-container hidden">
+                <a id="download-btn" href="#" class="btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 16V17C4 18.6569 5.34315 20 7 20H17C18.6569 20 20 18.6569 20 17V16M12 12V3M12 3L8 7M12 3L16 7"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Download Processed Image
+                </a>
+            </div>
+        </main>
+
+        <footer>
+            <p>Maximum file size: 5MB. Supported formats: JPG, PNG.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
