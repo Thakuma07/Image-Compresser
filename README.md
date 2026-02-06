@@ -1,8 +1,12 @@
 # FileForge
 
+<img width="1920" height="1080" alt="Screenshot (240)" src="https://github.com/user-attachments/assets/f43102de-d13d-4256-8b53-7145d74a37b6" />
+
 FileForge is a clean, modern, and production-style web application for uploading and processing images In-Memory. It allows users to upload images via a drag-and-drop interface, which are then validated, compressed, and processed instantly without storing files on the server.
 
+
 ## Features
+
 
 - **Drag & Drop Upload**: Intuitive user interface for file selection.
 - **In-Memory Processing**: Images are processed in RAM using Python's Pillow library and streamed back instantly. No files are saved to disk.
